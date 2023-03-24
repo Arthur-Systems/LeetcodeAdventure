@@ -1,6 +1,9 @@
 
 class Solution:
-    def PowerOfN(self, X, N):
+    def PowerOfN(self, X: float, N):
+
+        if N < 0:
+            return 1/self.PowerOfN(X, -N)
         if N == 0:
             return 1
         if N == 1:
@@ -12,6 +15,6 @@ class Solution:
 
 
 if __name__ == "__main__":
-    N = 12
-    X = 3
+    N = 2147483647
+    X = 0.0001
     print(Solution().PowerOfN(X, N))
