@@ -16,5 +16,5 @@ class Solution:
 
 
 if __name__ == "__main__":
-    number = 100
-    print(Solution().factorial(number))
+    number = 1000
+    print(Solution().factorialDynamic(number))
