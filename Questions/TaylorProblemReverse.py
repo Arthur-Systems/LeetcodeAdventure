@@ -17,45 +17,34 @@ def build_hash(album: list[list[str]], maxtime: int):
     return hash_table
 
 
-def find_songs(album: list[list[str]], maxtime: int):
+def find_songs_given_pointer(album: list[list[str]], maxtime: int, pointer: int):
     result = []
     maxtime = convert_to_seconds(maxtime)
     hash_table = sorted(build_hash(album, maxtime).items(), key=lambda x: x[1])
     print(hash_table, "maxtime: ", maxtime)
 
-    # poixnter = 0
-    pointer2 = 0
+    pointer2 = len(hash_table) - 1
 
     get_complement = lambda x: (maxtime - 1) - int(
         x
     )  # Gets the max size the other song can be
-    for pointer in range(len(hash_table)):  # O(n)
-        if (
-            pointer == pointer2 and pointer2 == len(hash_table) - 1
-        ):  # Only true if the list is one element long
+
+    for pointer in range(len(hash_table)):
+        if pointer == pointer2:
             break
+
         max_possible_duration = get_complement(
             hash_table[pointer][1]
         )  # Gets the max duration the other song can be
 
-        while max_possible_duration > hash_table[pointer2][1]:
-            pointer2 += 1
-            if (
-                max_possible_duration < hash_table[pointer][1]
-            ):  # if the next song is too long
-                pointer2 -= 1
-                break
-
-            if (
-                pointer2 == len(hash_table) - 1
-            ):  # if no complement is found (all songs are too long)
-                break
+        while max_possible_duration < hash_table[pointer2][1] and pointer2 > pointer:
+            pointer2 -= 1
+        if pointer2 == pointer:
+            break
         print(pointer, pointer2)
         for i in range(pointer, pointer2 + 1):
             if i != pointer:
                 result.append([hash_table[pointer][0], hash_table[i][0]])
-
-        pointer2 = pointer
 
     return result
 
@@ -76,16 +65,16 @@ if __name__ == "__main__":
     #     ["song10", "8:00"],
     # ]
     album = [
-        ["song1", "1:00"],
-        ["song2", "1:00"],
-        ["song3", "1:00"],
-        ["song4", "1:00"],
-        ["song5", "1:00"],
-        ["song6", "1:00"],
-        ["song7", "1:00"],
-        ["song8", "1:00"],
-        ["song9", "1:00"],
-        ["song10", "1:00"],
+        ["song1", "6:59"],
+        ["song2", "6:59"],
+        ["song3", "6:59"],
+        ["song4", "6:59"],
+        ["song5", "6:59"],
+        ["song6", "6:59"],
+        ["song7", "6:59"],
+        ["song8", "6:59"],
+        ["song9", "10:00"],
+        ["song10", "10:00"],
     ]
 
     print(find_songs(album, maxtime))
